@@ -64,7 +64,7 @@ public class CompareCoverageActionTest {
         when(pullRequestRepository.getGitHubRepository(GIT_URL)).thenReturn(ghRepository);
         when(listener.getLogger()).thenReturn(System.out);
     }
-    
+
     @Before
     public void reinitializeCoverageRepositories() {
         masterCoverageRepository = mock(MasterCoverageRepository.class);
@@ -123,7 +123,7 @@ public class CompareCoverageActionTest {
                 "Coverage 95% changed +7.0% vs master 88%"
         );
     }
-    
+
     @Test
     public void postResultAsFailedStatusCheck() throws IOException, InterruptedException {
         prepareBuildSuccess();
@@ -182,7 +182,29 @@ public class CompareCoverageActionTest {
 
         verify(pullRequestRepository).comment(ghRepository, 12, "[![0% (0.0%) vs master 0%](customJ/coverage-status-icon/?coverage=0.0&masterCoverage=0.0)](aaa/job/a)");
     }
-    
+
+    @Test
+    public void testGreenOverwrite() throws IOException, InterruptedException {
+        prepareBuildSuccess();
+        prepareEnvVars();
+        prepareCommit();
+        prepareCoverageData(0.6f, 0.7f);
+        when(settingsRepository.isPrivateJenkinsPublicGitHub()).thenReturn(true);
+        when(settingsRepository.getYellowThreshold()).thenReturn(50);
+        when(settingsRepository.getGreenThreshold()).thenReturn(80);
+        coverageAction.setPublishResultAs("comment");
+        coverageAction.perform(build, null, null, listener);
+
+        verify(pullRequestRepository).comment(ghRepository, 12, "[![70% (+10.0%) vs master 60%](https://img.shields.io/badge/coverage-70%25%20(%2B10.0%25)%20vs%20master%2060%25-yellow.svg)](aaa/job/a)");
+
+        // Overwrite global green threshold with job based value
+        coverageAction.setGreenThreshold("69");
+        coverageAction.perform(build, null, null, listener);
+
+        // expect color to change to brightgreen
+        verify(pullRequestRepository).comment(ghRepository, 12, "[![70% (+10.0%) vs master 60%](https://img.shields.io/badge/coverage-70%25%20(%2B10.0%25)%20vs%20master%2060%25-brightgreen.svg)](aaa/job/a)");
+    }
+
     private void prepareCoverageData(float masterCoverage, float prCoverage) throws IOException, InterruptedException {
         when(masterCoverageRepository.get(GIT_URL)).thenReturn(masterCoverage);
         when(coverageRepository.get(null)).thenReturn(prCoverage);

@@ -29,6 +29,7 @@ import hudson.tasks.BuildStepMonitor;
 import hudson.tasks.Publisher;
 import hudson.tasks.Recorder;
 import jenkins.tasks.SimpleBuildStep;
+import org.apache.commons.lang.math.NumberUtils;
 import org.kohsuke.github.GHCommitState;
 import org.kohsuke.github.GHPullRequestCommitDetail;
 import org.kohsuke.github.GHRepository;
@@ -203,8 +204,8 @@ public class CompareCoverageAction extends Recorder implements SimpleBuildStep {
             final String comment = message.forComment(
                     buildUrl,
                     jenkinsUrl,
-                    settingsRepository.getYellowThreshold(),
-                    settingsRepository.getGreenThreshold(),
+                    NumberUtils.toInt(yellowThreshold, settingsRepository.getYellowThreshold()),
+                    NumberUtils.toInt(greenThreshold, settingsRepository.getGreenThreshold()),
                     settingsRepository.isPrivateJenkinsPublicGitHub());
             ServiceRegistry.getPullRequestRepository().comment(gitHubRepository, prId, comment);
         } catch (Exception ex) {
