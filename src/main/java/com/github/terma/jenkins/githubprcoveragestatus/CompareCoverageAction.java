@@ -65,6 +65,9 @@ public class CompareCoverageAction extends Recorder implements SimpleBuildStep {
     private Map<String, String> scmVars;
     private String jacocoCoverageCounter;
     private String publishResultAs;
+    private String subProjectName;
+    private String yellowThreshold;
+    private String greenThreshold;
 
     @DataBoundConstructor
     public CompareCoverageAction() {
@@ -98,6 +101,33 @@ public class CompareCoverageAction extends Recorder implements SimpleBuildStep {
     @DataBoundSetter
     public void setJacocoCoverageCounter(String jacocoCoverageCounter) {
         this.jacocoCoverageCounter = jacocoCoverageCounter;
+    }
+
+    @DataBoundSetter
+    public void setSubProjectName(String subProjectName) {
+        this.subProjectName = subProjectName;
+    }
+
+    public String getSubProjectName() {
+        return subProjectName;
+    }
+
+    @DataBoundSetter
+    public void setYellowThreshold(String yellowThreshold) {
+        this.yellowThreshold= yellowThreshold;
+    }
+
+    public String getYellowThreshold() {
+        return yellowThreshold;
+    }
+
+    @DataBoundSetter
+    public void setGreenThreshold(String greenThreshold) {
+        this.greenThreshold = greenThreshold;
+    }
+
+    public String getGreenThreshold() {
+        return greenThreshold;
     }
 
     public String getPublishResultAs() {

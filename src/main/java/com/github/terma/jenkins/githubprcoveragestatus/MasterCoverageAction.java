@@ -53,6 +53,7 @@ public class MasterCoverageAction extends Recorder implements SimpleBuildStep {
 
     private Map<String, String> scmVars;
     private String jacocoCounterType;
+    private String subProjectName;
 
     @DataBoundConstructor
     public MasterCoverageAction() {
@@ -76,6 +77,15 @@ public class MasterCoverageAction extends Recorder implements SimpleBuildStep {
 
     public String getJacocoCounterType() {
         return jacocoCounterType;
+    }
+
+    @DataBoundSetter
+    public void setSubProjectName(String subProjectName) {
+        this.subProjectName = subProjectName;
+    }
+
+    public String getSubProjectName() {
+        return subProjectName;
     }
 
     @SuppressWarnings("NullableProblems")

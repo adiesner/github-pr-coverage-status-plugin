@@ -15,4 +15,13 @@
             <f:option value="statusCheck">${%Status Check}</f:option>
           </select>
         </f:entry>
+        <f:entry title="${%Sub Project Name}" field="subProjectName">
+            <f:textbox default=""/>
+        </f:entry>
+        <f:entry title="${%Yellow threshold 0-100%}" field="yellowThreshold">
+            <f:textbox default=""/>
+        </f:entry>
+        <f:entry title="${%Green threshold 0-100%}" field="greenThreshold">
+            <f:textbox default=""/>
+        </f:entry>
 </j:jelly>
