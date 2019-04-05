@@ -155,4 +155,14 @@ public class PrIdAndUrlUtilsTest {
 
         Assert.assertEquals("SCM_VARS_GIT_URL", PrIdAndUrlUtils.getGitUrl(scmVars, build, listener));
     }
+
+    @Test
+    public void getCoverageKey() {
+        final String gitUrl = "git@github.com:jenkinsci/github-pr-coverage-status-plugin.git";
+        final String subProjectName = "ProjectX";
+        Assert.assertEquals(PrIdAndUrlUtils.getCoverageKey(gitUrl, null), gitUrl);
+        Assert.assertEquals(PrIdAndUrlUtils.getCoverageKey(gitUrl, ""), gitUrl);
+        Assert.assertEquals(PrIdAndUrlUtils.getCoverageKey(gitUrl, "   "), gitUrl);
+        Assert.assertEquals(PrIdAndUrlUtils.getCoverageKey(gitUrl, subProjectName), gitUrl+"@"+subProjectName);
+    }
 }

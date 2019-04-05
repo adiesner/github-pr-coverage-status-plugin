@@ -46,7 +46,7 @@ public class SonarMasterCoverageRepositoryTest {
 
         givenMeasureResponse();
 
-        final float coverage = sonarMasterCoverageRepository.get(GIT_REPO_URL);
+        final float coverage = sonarMasterCoverageRepository.get(GIT_REPO_URL, null);
         assertThat(coverage, is(0.953f));
     }
 
@@ -57,7 +57,7 @@ public class SonarMasterCoverageRepositoryTest {
         givenProjectResponseWithMultipleMatches();
         givenMeasureResponse();
 
-        final float coverage = sonarMasterCoverageRepository.get(GIT_REPO_URL);
+        final float coverage = sonarMasterCoverageRepository.get(GIT_REPO_URL, null);
         assertThat(coverage, is(0.953f));
     }
 
@@ -67,7 +67,7 @@ public class SonarMasterCoverageRepositoryTest {
 
         givenProjectResponseWithoutMatch();
 
-        assertThat(sonarMasterCoverageRepository.get(GIT_REPO_URL), is(0f));
+        assertThat(sonarMasterCoverageRepository.get(GIT_REPO_URL, null), is(0f));
     }
 
     @Test
@@ -77,7 +77,7 @@ public class SonarMasterCoverageRepositoryTest {
         givenProjectResponseWithSingleMatch(null, null);
         givenNotFoundMeasureResponse();
 
-        assertThat(sonarMasterCoverageRepository.get(GIT_REPO_URL), is(0f));
+        assertThat(sonarMasterCoverageRepository.get(GIT_REPO_URL, null), is(0f));
     }
 
     private void givenCoverageRepository(final String login, String password) {

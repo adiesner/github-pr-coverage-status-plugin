@@ -17,7 +17,11 @@ limitations under the License.
 */
 package com.github.terma.jenkins.githubprcoveragestatus;
 
+import org.apache.commons.lang.StringUtils;
+
 import java.io.PrintStream;
+
+import static com.github.terma.jenkins.githubprcoveragestatus.PrIdAndUrlUtils.getCoverageKey;
 
 public class BuildMasterCoverageRepository implements MasterCoverageRepository {
 
@@ -28,13 +32,17 @@ public class BuildMasterCoverageRepository implements MasterCoverageRepository {
     }
 
     @Override
-    public float get(final String gitHubRepoUrl) {
+    public float get(final String gitHubRepoUrl, final String subProjectName) {
         if (gitHubRepoUrl == null) return 0;
-        final Float coverage = Configuration.DESCRIPTOR.getCoverageByRepo().get(gitHubRepoUrl);
+        String coverageKey = getCoverageKey(gitHubRepoUrl, subProjectName);
+        final Float coverage = Configuration.DESCRIPTOR.getCoverageByRepo().get(coverageKey);
         if (coverage == null) {
             buildLog.println("Can't find master coverage repository: " + gitHubRepoUrl
                     + " in stored: " + Configuration.DESCRIPTOR.getCoverageByRepo() + "\n"
                     + "Make sure that you have run build with step: " + MasterCoverageAction.DISPLAY_NAME);
+            if (StringUtils.isNotBlank(subProjectName)) {
+                buildLog.println("and subProjectName set to: " + subProjectName);
+            }
             return 0;
         }
         return coverage;

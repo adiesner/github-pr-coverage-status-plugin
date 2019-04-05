@@ -59,7 +59,7 @@ public class SonarMasterCoverageRepository implements MasterCoverageRepository {
     }
 
     @Override
-    public float get(final String gitHubRepoUrl) {
+    public float get(final String gitHubRepoUrl, final String subProjectName) {
         final String repoName = GitUtils.getRepoName(gitHubRepoUrl);
         log("Getting coverage for Git Repo URL: %s by repo name: %s", gitHubRepoUrl, repoName);
         try {

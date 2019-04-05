@@ -206,7 +206,7 @@ public class CompareCoverageActionTest {
     }
 
     private void prepareCoverageData(float masterCoverage, float prCoverage) throws IOException, InterruptedException {
-        when(masterCoverageRepository.get(GIT_URL)).thenReturn(masterCoverage);
+        when(masterCoverageRepository.get(GIT_URL, null)).thenReturn(masterCoverage);
         when(coverageRepository.get(null)).thenReturn(prCoverage);
         initMocks();
     }

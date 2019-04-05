@@ -37,6 +37,8 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.util.Map;
 
+import static com.github.terma.jenkins.githubprcoveragestatus.PrIdAndUrlUtils.getCoverageKey;
+
 /**
  * Record coverage of Jenkins Build and assume it as master coverage.
  * Master coverage will be used to compare Pull Request coverage and provide status message in Pull Request.
@@ -96,13 +98,14 @@ public class MasterCoverageAction extends Recorder implements SimpleBuildStep {
 
         final PrintStream buildLog = listener.getLogger();
         final String gitUrl = PrIdAndUrlUtils.getGitUrl(scmVars, build, listener);
+        final String coverageKey = getCoverageKey(gitUrl, subProjectName);
 
         final boolean disableSimpleCov = ServiceRegistry.getSettingsRepository().isDisableSimpleCov();
         final String jacocoCounterType = this.jacocoCounterType;
         final float masterCoverage = ServiceRegistry.getCoverageRepository(disableSimpleCov, jacocoCounterType)
                 .get(workspace);
         buildLog.println("Master coverage " + Percent.toWholeString(masterCoverage));
-        Configuration.setMasterCoverage(gitUrl, masterCoverage);
+        Configuration.setMasterCoverage(coverageKey, masterCoverage);
     }
 
     @Override

@@ -22,8 +22,9 @@ interface MasterCoverageRepository {
     /**
      *
      * @param gitHubRepoUrl - Git Hub Repository URL (full)
+     * @param subProjectName - Name of project in repository (may be null)
      * @return master coverage or zero if coverage don't exist or not tracked before
      */
-    float get(final String gitHubRepoUrl);
+    float get(final String gitHubRepoUrl, final String subProjectName);
 
 }

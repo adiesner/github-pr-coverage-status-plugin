@@ -20,6 +20,7 @@ package com.github.terma.jenkins.githubprcoveragestatus;
 import hudson.EnvVars;
 import hudson.model.Run;
 import hudson.model.TaskListener;
+import org.apache.commons.lang.StringUtils;
 import org.kohsuke.github.GHPullRequest;
 
 import java.io.IOException;
@@ -86,4 +87,10 @@ public class PrIdAndUrlUtils {
                     + " or " + CHANGE_URL_PROPERTY + " in envs: " + envVars);
     }
 
+    public static String getCoverageKey(String gitUrl, String subProjectName) {
+        if (StringUtils.isNotBlank(subProjectName)) {
+            return gitUrl + "@" + subProjectName;
+        }
+        return gitUrl;
+    }
 }
